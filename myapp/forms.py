@@ -10,6 +10,8 @@ class UserCreationForm(BaseUserCreationForm):
     class Meta:
         model = User
         fields = (
+            "first_name",
+            "last_name",
             "tz",
             "username",
             "email",
@@ -18,6 +20,8 @@ class UserCreationForm(BaseUserCreationForm):
             "password2",
         )
         labels = {
+            "first_name": "שם פרטי",
+            "last_name": "שם משפחה",
             "tz": "תעודת זהות",
             "username": "שם משתמש",
             "email": "אימייל",
@@ -30,11 +34,13 @@ class UserCreationForm(BaseUserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["team"].required = True
+        self.fields["first_name"].required = True
+        self.fields["last_name"].required = True
         self.fields["team"].empty_label = "בחרי צוות"
         self.fields["password1"].label = "סיסמה"
         self.fields["password2"].label = "אימות סיסמה"
         # הסברים קצרים במקום הטקסטים הארוכים של Django
-        self.fields["username"].help_text = "אותיות, ספרות והסימנים . _ - בלבד, בלי רווחים"
+        self.fields["username"].help_text = "לכניסה למערכת, למשל noa.peretz"
         self.fields["password1"].help_text = "לפחות 8 תווים, ולא רק ספרות"
         self.fields["password2"].help_text = ""
 
@@ -69,6 +75,8 @@ class TaskForm(forms.ModelForm):
             User.objects.filter(team=team).exclude(role="admin").order_by("username")
         )
         self.fields["user"].required = False
+        # ברשימת העובדים מוצג השם המלא ולא שם המשתמש
+        self.fields["user"].label_from_instance = lambda u: u.get_full_name() or u.username
         # במשימה חדשה הסטטוס תמיד "חדש" — השדה מופיע רק בעריכה
         if not self.instance.pk:
             del self.fields["status"]
