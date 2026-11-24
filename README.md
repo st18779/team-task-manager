@@ -27,12 +27,12 @@
 
 <table>
   <tr>
-    <td align="center" width="50%">
-      <img src="screenshots/tasks-worker.png" alt="תצוגת עובד"><br>
+    <td align="center" valign="top">
+      <img src="screenshots/tasks-worker.png" width="400" alt="תצוגת עובד"><br>
       <sub><b>תצוגת עובד</b> — שיבוץ עצמי וסימון משימה כהושלמה</sub>
     </td>
-    <td align="center" width="50%">
-      <img src="screenshots/task-form.png" alt="משימה חדשה"><br>
+    <td align="center" valign="top">
+      <img src="screenshots/task-form.png" width="400" alt="משימה חדשה"><br>
       <sub><b>משימה חדשה</b> — המנהלת יוצרת ומשייכת משימות</sub>
     </td>
   </tr>
@@ -40,16 +40,16 @@
 
 <table>
   <tr>
-    <td align="center" width="33%">
-      <img src="screenshots/home.png" alt="דף הבית"><br>
+    <td align="center" valign="top">
+      <img src="screenshots/home.png" width="260" alt="דף הבית"><br>
       <sub><b>דף הבית</b></sub>
     </td>
-    <td align="center" width="33%">
-      <img src="screenshots/login.png" alt="התחברות"><br>
+    <td align="center" valign="top">
+      <img src="screenshots/login.png" width="260" alt="התחברות"><br>
       <sub><b>התחברות</b></sub>
     </td>
-    <td align="center" width="33%">
-      <img src="screenshots/register.png" alt="הרשמה"><br>
+    <td align="center" valign="top">
+      <img src="screenshots/register.png" width="260" alt="הרשמה"><br>
       <sub><b>הרשמה</b></sub>
     </td>
   </tr>
