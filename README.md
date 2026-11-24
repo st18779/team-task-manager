@@ -19,21 +19,15 @@
 
 ## צילומי מסך
 
-<p align="center">
-  <img src="screenshots/tasks-admin.png" width="90%" alt="רשימת המשימות — תצוגת מנהלת">
-  <br>
-  <sub><b>רשימת המשימות — תצוגת מנהלת:</b> משימות בשלושה סטטוסים, תאריכי סיום וסימון משימות באיחור</sub>
-</p>
-
 <table>
   <tr>
     <td align="center" valign="top">
-      <img src="screenshots/tasks-worker.png" width="400" alt="תצוגת עובד"><br>
-      <sub><b>תצוגת עובד</b> — שיבוץ עצמי וסימון משימה כהושלמה</sub>
+      <img src="screenshots/tasks-admin.png" width="400" alt="תצוגת מנהלת"><br>
+      <sub><b>תצוגת מנהלת</b> — יצירה, עריכה ומחיקה של משימות</sub>
     </td>
     <td align="center" valign="top">
-      <img src="screenshots/task-form.png" width="400" alt="משימה חדשה"><br>
-      <sub><b>משימה חדשה</b> — המנהלת יוצרת ומשייכת משימות</sub>
+      <img src="screenshots/tasks-worker.png" width="400" alt="תצוגת עובד"><br>
+      <sub><b>תצוגת עובד</b> — שיבוץ עצמי וסימון משימה כהושלמה</sub>
     </td>
   </tr>
 </table>
@@ -41,15 +35,21 @@
 <table>
   <tr>
     <td align="center" valign="top">
-      <img src="screenshots/home.png" width="260" alt="דף הבית"><br>
+      <img src="screenshots/home.png" width="400" alt="דף הבית"><br>
       <sub><b>דף הבית</b></sub>
     </td>
     <td align="center" valign="top">
-      <img src="screenshots/login.png" width="260" alt="התחברות"><br>
+      <img src="screenshots/task-form.png" width="400" alt="משימה חדשה"><br>
+      <sub><b>משימה חדשה</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" valign="top">
+      <img src="screenshots/login.png" width="400" alt="התחברות"><br>
       <sub><b>התחברות</b></sub>
     </td>
     <td align="center" valign="top">
-      <img src="screenshots/register.png" width="260" alt="הרשמה"><br>
+      <img src="screenshots/register.png" width="400" alt="הרשמה"><br>
       <sub><b>הרשמה</b></sub>
     </td>
   </tr>
