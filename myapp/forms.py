@@ -1,0 +1,82 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm as BaseUserCreationForm
+
+from myapp.models import Task, User
+
+
+class UserCreationForm(BaseUserCreationForm):
+    """טופס הרשמה. התפקיד (role) לא נבחר כאן — מנהלים מוגדרים בממשק הניהול /admin/."""
+
+    class Meta:
+        model = User
+        fields = (
+            "tz",
+            "username",
+            "email",
+            "team",
+            "password1",
+            "password2",
+        )
+        labels = {
+            "tz": "תעודת זהות",
+            "username": "שם משתמש",
+            "email": "אימייל",
+            "team": "צוות",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["team"].required = True
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = "user"
+        if commit:
+            user.save()
+        return user
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        exclude = ["team"]
+        labels = {
+            "task_name": "שם המשימה",
+            "description": "תיאור",
+            "status": "סטטוס",
+            "end_date": "תאריך סיום",
+            "user": "עובד משויך",
+        }
+        widgets = {
+            "end_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
+            "description": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, team=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        # אפשר לשייך משימה רק לעובדים מהצוות של המנהל (ולא למנהלים)
+        self.fields["user"].queryset = (
+            User.objects.filter(team=team).exclude(role="admin").order_by("username")
+        )
+        self.fields["user"].required = False
+        # במשימה חדשה הסטטוס תמיד "חדש" — השדה מופיע רק בעריכה
+        if not self.instance.pk:
+            del self.fields["status"]
+
+
+class TaskFilterForm(forms.Form):
+    STATUS_CHOICES = [
+        ("", "כל הסטטוסים"),
+        ("new", "חדש"),
+        ("in_progress", "בתהליך"),
+        ("done", "הושלם"),
+    ]
+
+    ASSIGNEE_CHOICES = [
+        ("", "כל העובדים"),
+        ("unassigned", "לא משויך"),
+        ("me", "המשימות שלי"),
+    ]
+
+    status = forms.ChoiceField(choices=STATUS_CHOICES, required=False)
+    assignee = forms.ChoiceField(choices=ASSIGNEE_CHOICES, required=False)

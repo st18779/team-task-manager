@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>ניהול משימות</title>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-slate-100">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+
+    <!-- USER BAR -->
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/60 bg-white/70 backdrop-blur-xl px-5 py-3 shadow-lg shadow-slate-200/50">
+      <div class="flex items-center gap-3">
+        <div class="grid h-10 w-10 place-items-center rounded-full bg-indigo-600 text-lg font-black text-white">
+          {{ user.get_full_name|default:user.username|slice:":1"|upper }}
+        </div>
+        <div class="leading-tight">
+          <p class="font-black text-slate-900">{{ user.get_full_name|default:user.username }}</p>
+          <p class="text-sm text-slate-500">
+            {% if user.role == 'admin' %}מנהל/ת צוות{% else %}חבר/ת צוות{% endif %}{% if user.team %} · {{ user.team }}{% endif %}
+          </p>
+        </div>
+      </div>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="rounded-xl border border-rose-200 px-4 py-2 text-sm font-bold text-rose-600 hover:bg-rose-50 transition">
+          התנתקות
+        </button>
+      </form>
+    </div>
+
+    <!-- HERO -->
+    <div class="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white/70 backdrop-blur-xl shadow-2xl shadow-slate-200/70">
+      <div class="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-300/40 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-28 -right-28 h-72 w-72 rounded-full bg-emerald-300/30 blur-3xl"></div>
+
+      <div class="relative p-7 md:p-10">
+        <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-slate-900">
+              ניהול משימות
+            </h1>
+            <p class="mt-2 text-slate-600 text-base md:text-lg">
+              שליטה מלאה במשימות הצוות — בצורה מסודרת, מהירה ויפה.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            {% if user.role == 'admin' %}
+            <a href="{% url 'task_create' %}"
+               class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 font-bold text-white shadow-lg shadow-emerald-200/70 hover:bg-emerald-700 active:scale-[0.99] transition">
+              <span class="text-xl leading-none">+</span>
+              משימה חדשה
+            </a>
+            {% endif %}
+
+            <a href="{% url 'home' %}"
+               class="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 font-bold text-white shadow-lg shadow-slate-300/70 hover:bg-slate-800 active:scale-[0.99] transition">
+              חזרה לבית
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- FILTERS CARD -->
+        <div class="mt-7 rounded-3xl border border-slate-200 bg-white p-5 md:p-6 shadow-xl shadow-slate-200/50">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <h2 class="text-lg md:text-xl font-extrabold text-slate-900">סינון משימות</h2>
+              <p class="text-sm text-slate-600 mt-1">בחרי סטטוס ו/או עובד משויך</p>
+            </div>
+            <a href="{% url 'my_tasks' %}" class="text-sm font-bold text-slate-600 hover:text-indigo-700 underline-offset-4 hover:underline">
+              ניקוי סינון
+            </a>
+          </div>
+
+          <form method="post" action="{% url 'my_tasks' %}" class="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto] items-end">
+            {% csrf_token %}
+
+            <label class="block">
+              <span class="text-sm font-bold text-slate-700">סטטוס</span>
+              <div class="mt-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-indigo-200">
+                <div class="[&>select]:w-full [&>select]:bg-transparent [&>select]:outline-none [&>select]:text-slate-900 [&>select]:font-semibold">
+                  {{ form.status }}
+                </div>
+              </div>
+            </label>
+
+            <label class="block">
+              <span class="text-sm font-bold text-slate-700">עובד משויך</span>
+              <div class="mt-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-indigo-200">
+                <div class="[&>select]:w-full [&>select]:bg-transparent [&>select]:outline-none [&>select]:text-slate-900 [&>select]:font-semibold">
+                  {{ form.assignee }}
+                </div>
+              </div>
+            </label>
+
+            <button type="submit"
+              class="w-full md:w-auto rounded-2xl bg-indigo-600 px-6 py-3 font-black text-white shadow-lg shadow-indigo-200/70 hover:bg-indigo-700 active:scale-[0.99] transition">
+              סינון
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mt-8 grid gap-5">
+
+      {% for t in tasks %}
+      <div class="group relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-2xl shadow-slate-200/60">
+
+        {% if t.status == "new" %}
+          <div class="absolute inset-y-0 right-0 w-2 bg-sky-500"></div>
+          <div class="pointer-events-none absolute -top-16 -left-16 h-48 w-48 rounded-full bg-sky-200/40 blur-3xl opacity-0 group-hover:opacity-100 transition"></div>
+        {% elif t.status == "in_progress" %}
+          <div class="absolute inset-y-0 right-0 w-2 bg-amber-500"></div>
+          <div class="pointer-events-none absolute -top-16 -left-16 h-48 w-48 rounded-full bg-amber-200/40 blur-3xl opacity-0 group-hover:opacity-100 transition"></div>
+        {% else %}
+          <div class="absolute inset-y-0 right-0 w-2 bg-emerald-500"></div>
+          <div class="pointer-events-none absolute -top-16 -left-16 h-48 w-48 rounded-full bg-emerald-200/40 blur-3xl opacity-0 group-hover:opacity-100 transition"></div>
+        {% endif %}
+
+        <div class="relative p-6 md:p-7 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+          <!-- main -->
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-3">
+              <h3 class="text-xl md:text-2xl font-black text-slate-900 truncate">
+                {{ t.task_name }}
+              </h3>
+
+              {% if t.status == "new" %}
+                <span class="rounded-full bg-sky-50 px-3 py-1 text-sm font-black text-sky-700 ring-1 ring-sky-200">חדש</span>
+              {% elif t.status == "in_progress" %}
+                <span class="rounded-full bg-amber-50 px-3 py-1 text-sm font-black text-amber-800 ring-1 ring-amber-200">בתהליך</span>
+              {% else %}
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-800 ring-1 ring-emerald-200">הושלם</span>
+              {% endif %}
+            </div>
+
+            <p class="mt-2 text-slate-600 leading-relaxed">
+              {{ t.description }}
+            </p>
+
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-sm font-bold text-slate-700">
+                👤 אחראי:
+                <span class="text-slate-900">{% if t.user %}{{ t.user.get_full_name|default:t.user.username }}{% else %}טרם שובץ{% endif %}</span>
+              </div>
+
+              {% if t.status != "done" and t.end_date < today %}
+              <div class="inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1 text-sm font-bold text-rose-700 ring-1 ring-rose-200">
+                ⏰ באיחור · עד {{ t.end_date|date:"d/m/Y" }}
+              </div>
+              {% else %}
+              <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-sm font-bold text-slate-700">
+                📅 עד {{ t.end_date|date:"d/m/Y" }}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- actions -->
+          <div class="flex flex-wrap items-center gap-2 md:gap-3">
+
+            {% if not user.role == 'admin' and not t.user %}
+            <form method="post" action="{% url 'task_assign' t.id %}">
+              {% csrf_token %}
+              <button type="submit"
+                class="inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-2.5 text-white font-black shadow-lg shadow-indigo-200/70 hover:bg-indigo-700 transition">
+                שיבוץ ↗
+              </button>
+            </form>
+            {% endif %}
+
+            {% if t.status == "in_progress" %}
+              {% if user.role == 'admin' or t.user == user %}
+              <form method="post" action="{% url 'task_complete' t.id %}">
+                {% csrf_token %}
+                <button type="submit"
+                  class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2.5 text-white font-black shadow-lg shadow-emerald-200/70 hover:bg-emerald-700 transition">
+                  סיום ✅
+                </button>
+              </form>
+              {% endif %}
+            {% endif %}
+
+            {% if user.role == 'admin' and not t.user %}
+            <a href="{% url 'task_update' t.id %}"
+              class="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-2.5 text-white font-black shadow-lg shadow-slate-300/70 hover:bg-slate-800 transition">
+              עריכה ✏️
+            </a>
+
+            <a href="{% url 'task_delete' t.id %}"
+              class="inline-flex items-center gap-2 rounded-2xl bg-rose-600 px-4 py-2.5 text-white font-black shadow-lg shadow-rose-200/70 hover:bg-rose-700 transition">
+              מחיקה 🗑️
+            </a>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+      {% empty %}
+      <div class="rounded-[2rem] border border-dashed border-slate-300 bg-white/70 p-12 text-center shadow-lg shadow-slate-200/60">
+        <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 text-2xl mb-3">🫧</div>
+        <p class="text-2xl font-black text-slate-900">אין משימות להצגה כרגע</p>
+        <p class="mt-2 text-slate-600">כשתהיינה משימות — הן יופיעו כאן.</p>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</body>
+</html>
