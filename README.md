@@ -19,16 +19,49 @@
 
 ## צילומי מסך
 
-| רשימת המשימות (מנהלת) | רשימת המשימות (עובד) |
-|---|---|
-| ![](screenshots/tasks-admin.png) | ![](screenshots/tasks-worker.png) |
+<p align="center">
+  <img src="screenshots/tasks-admin.png" width="90%" alt="רשימת המשימות — תצוגת מנהלת">
+  <br>
+  <sub><b>רשימת המשימות — תצוגת מנהלת:</b> משימות בשלושה סטטוסים, תאריכי סיום וסימון משימות באיחור</sub>
+</p>
 
-| דף הבית | משימה חדשה | התחברות |
-|---|---|---|
-| ![](screenshots/home.png) | ![](screenshots/task-form.png) | ![](screenshots/login.png) |
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/tasks-worker.png" alt="תצוגת עובד"><br>
+      <sub><b>תצוגת עובד</b> — שיבוץ עצמי וסימון משימה כהושלמה</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshots/task-form.png" alt="משימה חדשה"><br>
+      <sub><b>משימה חדשה</b> — המנהלת יוצרת ומשייכת משימות</sub>
+    </td>
+  </tr>
+</table>
 
-### תצוגת מובייל
-<img src="screenshots/mobile.png" width="300">
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="screenshots/home.png" alt="דף הבית"><br>
+      <sub><b>דף הבית</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="screenshots/login.png" alt="התחברות"><br>
+      <sub><b>התחברות</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="screenshots/register.png" alt="הרשמה"><br>
+      <sub><b>הרשמה</b></sub>
+    </td>
+  </tr>
+</table>
+
+### 📱 מותאם למובייל
+
+<p align="center">
+  <img src="screenshots/mobile.png" width="260" alt="רשימת המשימות במובייל">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/mobile-register.png" width="260" alt="הרשמה במובייל">
+</p>
 
 ## מבנה הפרויקט
 

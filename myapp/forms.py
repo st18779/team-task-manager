@@ -23,10 +23,20 @@ class UserCreationForm(BaseUserCreationForm):
             "email": "אימייל",
             "team": "צוות",
         }
+        error_messages = {
+            "tz": {"unique": "כבר קיים משתמש עם תעודת הזהות הזו."},
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["team"].required = True
+        self.fields["team"].empty_label = "בחרי צוות"
+        self.fields["password1"].label = "סיסמה"
+        self.fields["password2"].label = "אימות סיסמה"
+        # הסברים קצרים במקום הטקסטים הארוכים של Django
+        self.fields["username"].help_text = "אותיות, ספרות והסימנים . _ - בלבד, בלי רווחים"
+        self.fields["password1"].help_text = "לפחות 8 תווים, ולא רק ספרות"
+        self.fields["password2"].help_text = ""
 
     def save(self, commit=True):
         user = super().save(commit=False)
